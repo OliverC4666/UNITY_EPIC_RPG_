@@ -9,9 +9,11 @@ public class Health : MonoBehaviour
     public int maxHealth = 100;
     public int health = 100;
 
+    private Rigidbody2D rb;
     void Start()
     {
         anim = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
         if (Healthbar != null)
         {
             Healthbar.value = (float)health / maxHealth; // Initialize correctly
@@ -23,6 +25,7 @@ public class Health : MonoBehaviour
     }
     private void Update()
     {
+        if (gameObject == null) Debug.Log("object terminated");
         if (Healthbar != null)
         {
             Healthbar.value = (float)health / maxHealth;
@@ -34,7 +37,8 @@ public class Health : MonoBehaviour
 
         if (health <= 0)
         {
-            StartCoroutine(Die()); // Use a coroutine instead of async
+            Destroy(rb);
+            anim.SetBool("died", true); 
         }
     }
     public void TakeDamage(int damage)
@@ -53,20 +57,8 @@ public class Health : MonoBehaviour
         }
     }
 
-    IEnumerator Die()
+    public void Die()
     {
-        if (anim != null)
-        {
-            anim.SetBool("died", true);
-
-            // Wait for the animation to finish
-            yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length);
-        }
-        else
-        {
-            yield return new WaitForSeconds(1.5f); // Fallback if no animator
-        }
-
         Destroy(gameObject);
     }
 }

@@ -2,17 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 
-
 public class PlayerAttack : MonoBehaviour
 {
     public List<AttackOptionP> AttackConf = new(); // Configurable attacks
-    public GameObject attackHitbox;  // The attack hitbox GameObject
-    public LayerMask EnemyLayer;     // Defines what counts as an enemy
-    public float trackingDuration = 0.5f; // Time window to track combos
+    public LayerMask EnemyLayer;                   // Defines what counts as an enemy
+    public float trackingDuration = 0.5f;          // Time window to track combos
+    public float attackRange;
+    public GameObject attackHitbox;                // The attack hitbox GameObject
 
     private int counterClick = 0;
+    private bool isTracking = false;
+    private bool hitboxActive = false;
     private Animator anim;
-    private bool isTracking = false; // Flag for combo tracking
 
     private void Start()
     {
@@ -28,12 +29,11 @@ public class PlayerAttack : MonoBehaviour
     {
         foreach (var config in AttackConf)
         {
-            if (Input.GetKeyDown(config.button)) // Check for key press
+            if (Input.GetKeyDown(config.button))
             {
                 counterClick++;
                 anim.SetInteger("ClickCounter", counterClick);
-                anim.SetTrigger(config.TriggerKey); // Trigger attack animation
-                Attack(config.AttackRange, config.Damage); // Use attack settings
+                anim.SetTrigger(config.TriggerKey);
 
                 if (!isTracking)
                 {
@@ -43,8 +43,25 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    public void EnableHitbox()
+    {
+        hitboxActive = true;
+
+        int attackIndex = Mathf.Clamp(counterClick - 1, 0, AttackConf.Count - 1);
+        var currentAttack = AttackConf[attackIndex];
+
+        Attack(currentAttack.AttackRange, currentAttack.Damage);
+    }
+
+    public void DisableHitbox()
+    {
+        hitboxActive = false;
+    }
+
     public void Attack(float range, int attackDamage)
     {
+        if (!hitboxActive) return;
+
         if (attackHitbox == null)
         {
             Debug.LogError("⚠️ AttackHitbox is missing. Assign it in the Inspector!");
@@ -71,18 +88,17 @@ public class PlayerAttack : MonoBehaviour
     {
         isTracking = true;
         yield return new WaitForSeconds(trackingDuration);
-        counterClick = 0; // Reset counter after tracking duration
-        anim.SetInteger("ClickCounter", counterClick); // Reset animator parameter
+        counterClick = 0;
+        anim.SetInteger("ClickCounter", counterClick);
         isTracking = false;
     }
 
-    // Debugging: Draws the attack range in Scene View
-    private void OnDrawGizmosSelected()
+    public void OnDrawGizmos()
     {
         if (attackHitbox != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(attackHitbox.transform.position, 1f);
+            Gizmos.DrawWireSphere(attackHitbox.transform.position, attackRange);
         }
     }
 }

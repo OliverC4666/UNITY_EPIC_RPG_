@@ -44,7 +44,7 @@ public class EnemyAI : MonoBehaviour
 
             if (distanceToPlayer <= attackRange && !isAttacking)
             {
-                StartCoroutine(Attack("Slash Attack"));
+                Attack("Slash Attack");
             }
             else if (distanceToPlayer <= detectionRange && !isAttacking)
             {
@@ -97,29 +97,10 @@ public class EnemyAI : MonoBehaviour
         Flip(moveDirection > 0);
     }
 
-    IEnumerator Attack(string MoveName)
+    public void Attack(string MoveName)
     {
         isAttacking = true; // Prevents movement or other actions
         anim.SetTrigger("Attack"); // Play attack animation
-
-        foreach (var config in EnemyAttack.AttackConf)
-        {
-            if (config.name == MoveName)
-            {
-                yield return new WaitForSeconds(config.attackCooldown / 2); // Prepare for attack
-
-                // Enable hitbox for a short time
-                config.Attack = true;
-                attackHitbox.SetActive(config.Attack);
-                yield return new WaitUntil(anim.;
-                                                        // Hitbox active for 0.1s
-                attackHitbox.SetActive(config.Attack); // Disable after attack
-
-                yield return new WaitForSeconds(config.attackCooldown / 2); // Finish attack cooldown
-                config.Attack = false;
-            }
-
-        }
 
         isAttacking = false; // Allow attacking again
     }

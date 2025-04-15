@@ -9,6 +9,7 @@ public class EnemyAttack : MonoBehaviour
     public float DemoRange;
     public LayerMask PlayerLayer;     // Defines what counts as an enemy/player
     private Animator anim;
+    private bool hitboxActive = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Start()
     {
@@ -16,7 +17,7 @@ public class EnemyAttack : MonoBehaviour
 
         if (attackHitbox == null)
         {
-            Debug.LogError("⚠️ AttackHitbox is not assigned to PlayerAttack script!");
+            Debug.LogError("⚠️ AttackHitbox is not assigned to  script!");
         }
     }
 
@@ -32,8 +33,24 @@ public class EnemyAttack : MonoBehaviour
             }
         }
     }
-    public void Attack(float range, int attackDamage) //enable hit box and record hit layer 
+    public void EnableHitbox()
     {
+        hitboxActive = true;
+
+        int attackIndex = 0;
+        var currentAttack = AttackConf[attackIndex];
+
+        Attack(currentAttack.AttackRange, currentAttack.Damage);
+    }
+
+    public void DisableHitbox()
+    {
+        hitboxActive = false;
+    }
+    public void Attack(float range, int attackDamage)
+    {
+        if (!hitboxActive) return;
+
         if (attackHitbox == null)
         {
             Debug.LogError("⚠️ AttackHitbox is missing. Assign it in the Inspector!");
@@ -44,9 +61,9 @@ public class EnemyAttack : MonoBehaviour
 
         foreach (Collider2D target in targetsHit)
         {
-            if (target.TryGetComponent<Health>(out var Player))
+            if (target.TryGetComponent<Health>(out var enemy))
             {
-                Player.TakeDamage(attackDamage);
+                enemy.TakeDamage(attackDamage);
                 Debug.Log($"✅ Hit {target.gameObject.name} for {attackDamage} damage!");
             }
             else
