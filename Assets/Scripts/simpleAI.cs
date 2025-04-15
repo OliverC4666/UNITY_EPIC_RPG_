@@ -111,7 +111,7 @@ public class EnemyAI : MonoBehaviour
                 // Enable hitbox for a short time
                 config.Attack = true;
                 attackHitbox.SetActive(config.Attack);
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitUntil(anim.;
                                                         // Hitbox active for 0.1s
                 attackHitbox.SetActive(config.Attack); // Disable after attack
 

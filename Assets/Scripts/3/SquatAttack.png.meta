@@ -311,7 +311,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SquatAttack_0: -189823759360938847
+      SquatAttack_1: 2060122075320379692
+      SquatAttack_2: -460444459535643792
+      SquatAttack_3: 7832088892242495906
+      SquatAttack_4: 6879208572883584346
+      SquatAttack_5: 8191869675623182329
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      0_Minotaur_Throwing_005_0: -6537173266471894500
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

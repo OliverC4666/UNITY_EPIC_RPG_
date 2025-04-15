@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      0_Minotaur_Slashing in The Air_011_0: -8185725647447302612
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      0_Minotaur_Hurt_002_0: 4840552732252286575
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

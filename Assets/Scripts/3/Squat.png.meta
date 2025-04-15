@@ -261,7 +261,11 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Squat_0: -4682614504074706577
+      Squat_1: 5466378422665275556
+      Squat_2: -5388374768132906187
+      Squat_3: 7555913752989028030
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      0_Minotaur_Run Slashing_004_0: 9061784229474431776
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

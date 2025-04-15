@@ -336,7 +336,14 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      water90035_0: -9026908638270684354
+      water90035_1: 3244577011825154977
+      water90035_2: 1764591653681333534
+      water90035_3: 129324370254454029
+      water90035_4: -6594348924067605574
+      water90035_5: -5669360472169695816
+      water90035_6: -7201293259348071669
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

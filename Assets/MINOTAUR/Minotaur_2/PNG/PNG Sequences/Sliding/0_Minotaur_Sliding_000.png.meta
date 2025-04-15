@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      0_Minotaur_Sliding_000_0: 8573103685231610617
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

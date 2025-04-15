@@ -186,7 +186,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      0_Minotaur_Falling Down_005_0: -9050533602303547994
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
