@@ -9,6 +9,7 @@ public class PlayerAttack : MonoBehaviour
     public float trackingDuration = 0.5f;          // Time window to track combos
     public float attackRange;
     public GameObject attackHitbox;                // The attack hitbox GameObject
+    public PlayerStats playerStats;                // Reference to ScriptableObject
 
     private int counterClick = 0;
     private bool isTracking = false;
@@ -18,6 +19,11 @@ public class PlayerAttack : MonoBehaviour
     private void Start()
     {
         anim = GetComponent<Animator>();
+
+        if (playerStats == null)
+        {
+            Debug.LogError("⚠️ PlayerStats (ScriptableObject) not assigned!");
+        }
 
         if (attackHitbox == null)
         {
@@ -50,7 +56,7 @@ public class PlayerAttack : MonoBehaviour
         int attackIndex = Mathf.Clamp(counterClick - 1, 0, AttackConf.Count - 1);
         var currentAttack = AttackConf[attackIndex];
 
-        Attack(currentAttack.AttackRange, currentAttack.Damage);
+        Attack(currentAttack.AttackRange, currentAttack.Damage + playerStats.power / 10f);
     }
 
     public void DisableHitbox()
@@ -58,7 +64,7 @@ public class PlayerAttack : MonoBehaviour
         hitboxActive = false;
     }
 
-    public void Attack(float range, int attackDamage)
+    public void Attack(float range, float attackDamage)
     {
         if (!hitboxActive) return;
 

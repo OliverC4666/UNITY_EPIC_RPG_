@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 
@@ -6,55 +6,76 @@ public class Health : MonoBehaviour
 {
     public Animator anim;
     public Slider Healthbar;
-    public int maxHealth = 100;
-    public int health = 100;
+    public PlayerStats playerStats;  // ScriptableObject reference
 
+    private bool damaged = false;
+    private float timeSinceDamaged = 0f;
+    private float healDelay = 5f;
+    private float healRate = 1f; // Amount to heal per second
     private Rigidbody2D rb;
+
     void Start()
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        if (Healthbar != null)
-        {
-            Healthbar.value = (float)health / maxHealth; // Initialize correctly
-        }
-        else
-        {
+
+        if (Healthbar == null)
             Debug.LogWarning("Healthbar reference is missing!", this);
-        }
+
+        if (playerStats == null)
+            Debug.LogError("PlayerStats ScriptableObject not assigned!", this);
     }
-    private void Update()
+
+    void Update()
     {
-        if (gameObject == null) Debug.Log("object terminated");
-        if (Healthbar != null)
+        // Handle healthbar UI update
+        if (Healthbar != null && playerStats != null)
         {
-            Healthbar.value = (float)health / maxHealth;
-        }
-        else
-        {
-            Debug.LogWarning("Healthbar is null!", this);
+            Healthbar.value = (float)playerStats.currentHealth / playerStats.maxHealth;
         }
 
-        if (health <= 0)
+        // Death check
+        if (playerStats != null && playerStats.currentHealth <= 0)
         {
-            Destroy(rb);
-            anim.SetBool("died", true); 
+            if (rb != null) Destroy(rb);
+            if (anim != null) anim.SetBool("died", true);
+            return; // stop all healing logic
+        }
+
+        // Heal after delay if not recently damaged
+        if (!damaged)
+        {
+            timeSinceDamaged += Time.deltaTime;
+
+            if (timeSinceDamaged >= healDelay && playerStats.currentHealth < playerStats.maxHealth)
+            {
+                playerStats.currentHealth += Mathf.CeilToInt(healRate * Time.deltaTime);
+                playerStats.currentHealth = Mathf.Clamp(playerStats.currentHealth, 0, playerStats.maxHealth);
+            }
         }
     }
+
     public void TakeDamage(int damage)
     {
-        if (health <= 0) return; // Already dead
+        if (playerStats.currentHealth <= 0) return; // already dead
+        StartCoroutine(Damaged(damage));
+    }
 
-        health -= damage;
-        health = Mathf.Clamp(health, 0, maxHealth); // Prevent negative values
+    IEnumerator Damaged(int damage)
+    {
+        damaged = true;
+        timeSinceDamaged = 0f;
+
+        playerStats.currentHealth -= damage;
+        playerStats.currentHealth = Mathf.Clamp(playerStats.currentHealth, 0, playerStats.maxHealth);
+
         if (anim != null)
-        {
             anim.SetTrigger("IsAttacked");
-        }
         else
-        {
-            Debug.LogWarning("Animator reference is missing!", this);
-        }
+            Debug.LogWarning("Animator is missing!", this);
+
+        yield return new WaitForSeconds(0.2f); // Optional: invincibility window
+        damaged = false;
     }
 
     public void Die()

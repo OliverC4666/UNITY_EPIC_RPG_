@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Threading.Tasks;
 using UnityEngine.UI;
 
@@ -6,9 +6,9 @@ public class EnemyHealth : MonoBehaviour
 {
     public Animator anim;
     public Slider Healthbar;
-    public int maxHealth = 100;
-    public int health = 100;
-    private bool isDead = false; // Prevent multiple death triggers
+    public PlayerStats enemyStats; // 📦 Reference to ScriptableObject
+
+    private bool isDead = false;
 
     void Start()
     {
@@ -16,7 +16,7 @@ public class EnemyHealth : MonoBehaviour
 
         if (Healthbar != null)
         {
-            Healthbar.value = (float)health / maxHealth;
+            Healthbar.value = enemyStats.currentHealth = enemyStats.maxHealth;
         }
         else
         {
@@ -30,22 +30,22 @@ public class EnemyHealth : MonoBehaviour
         {
             if (Healthbar != null)
             {
-                Healthbar.value = (float)health / maxHealth;
+                Healthbar.value = (float)enemyStats.currentHealth / enemyStats.maxHealth;
             }
 
-            if (health <= 0)
+            if (enemyStats.currentHealth <= 0)
             {
                 StartDeathSequence();
             }
         }
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
-        if (isDead) return; // Ignore if already dead
+        if (isDead) return;
 
-        health -= damage;
-        health = Mathf.Clamp(health, 0, maxHealth);
+        enemyStats.currentHealth -= damage;
+        enemyStats.currentHealth = Mathf.Clamp(enemyStats.currentHealth, 0, enemyStats.maxHealth);
 
         if (anim != null)
         {
@@ -59,7 +59,7 @@ public class EnemyHealth : MonoBehaviour
 
     async void StartDeathSequence()
     {
-        if (isDead) return; // Prevent multiple executions
+        if (isDead) return;
         isDead = true;
 
         if (anim != null)
@@ -68,8 +68,7 @@ public class EnemyHealth : MonoBehaviour
         }
 
         DisableAllScripts();
-
-        await Task.Delay(900); // Wait before destruction
+        await Task.Delay(900);
         Destroy(gameObject);
     }
 
@@ -78,7 +77,7 @@ public class EnemyHealth : MonoBehaviour
         MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
         foreach (MonoBehaviour script in scripts)
         {
-            if (script != this) // Keep this script active for the death animation
+            if (script != this)
             {
                 script.enabled = false;
             }
