@@ -2,22 +2,25 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class Health : MonoBehaviour
+public class PlayerHealth : MonoBehaviour
 {
     public Animator anim;
     public Slider Healthbar;
     public PlayerStats playerStats;  // ScriptableObject reference
 
     private bool damaged = false;
+    private float currentHealth;
     private float timeSinceDamaged = 0f;
-    private float healDelay = 5f;
+    private float healDelay = 10f;
     private float healRate = 1f; // Amount to heal per second
     private Rigidbody2D rb;
 
     void Start()
     {
+        currentHealth = playerStats.maxHealth;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        Healthbar = GameObject.Find(gameObject.name + " Health").GetComponent<Slider>();
 
         if (Healthbar == null)
             Debug.LogWarning("Healthbar reference is missing!", this);
@@ -31,11 +34,11 @@ public class Health : MonoBehaviour
         // Handle healthbar UI update
         if (Healthbar != null && playerStats != null)
         {
-            Healthbar.value = (float)playerStats.currentHealth / playerStats.maxHealth;
+            Healthbar.value = (float)currentHealth / playerStats.maxHealth;
         }
 
         // Death check
-        if (playerStats != null && playerStats.currentHealth <= 0)
+        if (playerStats != null && currentHealth <= 0)
         {
             if (rb != null) Destroy(rb);
             if (anim != null) anim.SetBool("died", true);
@@ -47,17 +50,17 @@ public class Health : MonoBehaviour
         {
             timeSinceDamaged += Time.deltaTime;
 
-            if (timeSinceDamaged >= healDelay && playerStats.currentHealth < playerStats.maxHealth)
+            if (timeSinceDamaged >= healDelay && currentHealth < playerStats.maxHealth)
             {
-                playerStats.currentHealth += Mathf.CeilToInt(healRate * Time.deltaTime);
-                playerStats.currentHealth = Mathf.Clamp(playerStats.currentHealth, 0, playerStats.maxHealth);
+                currentHealth += Mathf.CeilToInt(healRate * Time.deltaTime);
+                currentHealth = Mathf.Clamp(currentHealth, 0, playerStats.maxHealth);
             }
         }
     }
 
     public void TakeDamage(int damage)
     {
-        if (playerStats.currentHealth <= 0) return; // already dead
+        if (currentHealth <= 0) return; // already dead
         StartCoroutine(Damaged(damage));
     }
 
@@ -66,8 +69,8 @@ public class Health : MonoBehaviour
         damaged = true;
         timeSinceDamaged = 0f;
 
-        playerStats.currentHealth -= damage;
-        playerStats.currentHealth = Mathf.Clamp(playerStats.currentHealth, 0, playerStats.maxHealth);
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, playerStats.maxHealth);
 
         if (anim != null)
             anim.SetTrigger("IsAttacked");
@@ -80,6 +83,8 @@ public class Health : MonoBehaviour
 
     public void Die()
     {
+        Destroy(Healthbar.gameObject);
         Destroy(gameObject);
+        
     }
 }

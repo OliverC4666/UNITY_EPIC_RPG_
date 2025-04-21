@@ -2,21 +2,25 @@
 using System.Threading.Tasks;
 using UnityEngine.UI;
 
-public class EnemyHealth : MonoBehaviour
+public class Health : MonoBehaviour
 {
     public Animator anim;
-    public Slider Healthbar;
-    public PlayerStats enemyStats; // 📦 Reference to ScriptableObject
+    private Slider Healthbar;
+    public PlayerStats Entity; // 📦 Reference to ScriptableObject
 
+    private float currentHealth;
     private bool isDead = false;
 
     void Start()
     {
         anim = GetComponent<Animator>();
+        currentHealth = Entity.maxHealth;
+        GameObject found = GameObject.Find(gameObject.name + " Health");
+        Healthbar = found==null?null:found.GetComponent<Slider>();
 
         if (Healthbar != null)
         {
-            Healthbar.value = enemyStats.currentHealth = enemyStats.maxHealth;
+            Healthbar.value = currentHealth = Entity.maxHealth;
         }
         else
         {
@@ -30,10 +34,10 @@ public class EnemyHealth : MonoBehaviour
         {
             if (Healthbar != null)
             {
-                Healthbar.value = (float)enemyStats.currentHealth / enemyStats.maxHealth;
+                Healthbar.value = (float)currentHealth / Entity.maxHealth;
             }
 
-            if (enemyStats.currentHealth <= 0)
+            if (currentHealth <= 0)
             {
                 StartDeathSequence();
             }
@@ -44,8 +48,8 @@ public class EnemyHealth : MonoBehaviour
     {
         if (isDead) return;
 
-        enemyStats.currentHealth -= damage;
-        enemyStats.currentHealth = Mathf.Clamp(enemyStats.currentHealth, 0, enemyStats.maxHealth);
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, Entity.maxHealth);
 
         if (anim != null)
         {
@@ -69,7 +73,9 @@ public class EnemyHealth : MonoBehaviour
 
         DisableAllScripts();
         await Task.Delay(900);
+        
         Destroy(gameObject);
+        
     }
 
     void DisableAllScripts()
@@ -82,5 +88,6 @@ public class EnemyHealth : MonoBehaviour
                 script.enabled = false;
             }
         }
+        Destroy(Healthbar.gameObject);
     }
 }

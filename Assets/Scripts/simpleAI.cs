@@ -130,7 +130,7 @@ public class EnemyAI : MonoBehaviour
         isAttacking = true;
 
         var currentAttack = attackOptions[currentAttackIndex];
-        Attack(currentAttack.AttackRange, currentAttack.Damage);
+        Attack(currentAttack.AttackRange, currentAttack.baseDamage);
     }
 
     public void DisableHitbox()
@@ -147,7 +147,7 @@ public class EnemyAI : MonoBehaviour
 
         foreach (Collider2D target in targetsHit)
         {
-            if (target.TryGetComponent<Health>(out var health))
+            if (target.TryGetComponent<PlayerHealth>(out var health))
             {
                 health.TakeDamage(attackDamage);
                 Debug.Log($"✅ Hit {target.gameObject.name} for {attackDamage} damage!");

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abdd055847f0493409d1ba989f67f81e, type: 3}
   m_Name: EnemyStats
   m_EditorClassIdentifier: 
+  stats:
+  - name: power
+    value: 5
   maxHealth: 120
   currentHealth: 120
-  power: 7
-  speed: 5

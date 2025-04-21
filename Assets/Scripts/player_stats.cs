@@ -1,31 +1,44 @@
+using System.Collections.Generic;
 using UnityEngine;
+
 
 [CreateAssetMenu(fileName = "PlayerStats", menuName = "ScriptableObjects/PlayerStats", order = 1)]
 public class PlayerStats : ScriptableObject
 {
+
+    public List<Stats> stats = new() ;
     public float maxHealth = 100;
-    public float currentHealth = 100;
-    public float power = 0;
-    public float speed = 5f;
 
-    public void TakeDamage(float amount)
+    public void IncreaseStat(string name,float amount)
     {
-        currentHealth = Mathf.Max(currentHealth - amount, 0);
+        Stats stat = Search(name);
+
+        if (stats != null) 
+            Search(name).value += amount;
+        else 
+        Debug.Log($"Stat: {name} not found in {this}, Check the name!");
     }
 
-    public void Heal(float amount)
+    public void ResetAllStats()
     {
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        foreach (var stat in stats) { stat.value = 0; }
     }
+    private Stats Search(string name) 
+    {
+        foreach(var stat in stats) 
+        {
+            if (stat.name == name)
+                return stat;
+        }
+        
+        return null;
+    }
+    public float Get(string name)
+    {
+        if (!string.IsNullOrEmpty(name))
+            return Search(name)!=null? Search(name).value:0;
+        return 0;
+    }
+    
 
-    public void IncreasePower(float amount)
-    {
-        power += amount;
-    }
-
-    public void ResetStats()
-    {
-        currentHealth = maxHealth;
-        power = 0;
-    }
 }

@@ -56,7 +56,7 @@ public class PlayerAttack : MonoBehaviour
         int attackIndex = Mathf.Clamp(counterClick - 1, 0, AttackConf.Count - 1);
         var currentAttack = AttackConf[attackIndex];
 
-        Attack(currentAttack.AttackRange, currentAttack.Damage + playerStats.power / 10f);
+        Attack(currentAttack.AttackRange, currentAttack.baseDamage + playerStats.Get("power") / 100f);
     }
 
     public void DisableHitbox()
@@ -78,7 +78,7 @@ public class PlayerAttack : MonoBehaviour
 
         foreach (Collider2D target in targetsHit)
         {
-            if (target.TryGetComponent<EnemyHealth>(out var enemy))
+            if (target.TryGetComponent<Health>(out var enemy))
             {
                 enemy.TakeDamage(attackDamage);
                 Debug.Log($"✅ Hit {target.gameObject.name} for {attackDamage} damage!");
