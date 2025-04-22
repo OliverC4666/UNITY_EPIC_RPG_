@@ -15,8 +15,13 @@ public class Health : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         currentHealth = Entity.maxHealth;
-        GameObject found = GameObject.Find(gameObject.name + " Health");
-        Healthbar = found==null?null:found.GetComponent<Slider>();
+        do
+        {
+            GameObject found = GameObject.Find(gameObject.name + " Health");
+            Healthbar = found == null ? null : found.GetComponent<Slider>();
+
+        }
+        while (Healthbar == null);
 
         if (Healthbar != null)
         {

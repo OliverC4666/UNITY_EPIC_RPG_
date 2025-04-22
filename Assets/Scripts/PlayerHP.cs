@@ -5,9 +5,10 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public Animator anim;
-    public Slider Healthbar;
+    
     public PlayerStats playerStats;  // ScriptableObject reference
 
+    private Slider Healthbar;
     private bool damaged = false;
     private float currentHealth;
     private float timeSinceDamaged = 0f;
@@ -20,7 +21,13 @@ public class PlayerHealth : MonoBehaviour
         currentHealth = playerStats.maxHealth;
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        Healthbar = GameObject.Find(gameObject.name + " Health").GetComponent<Slider>();
+        do
+        {
+            GameObject found = GameObject.Find(gameObject.name + " Health");
+            Healthbar = found == null ? null : found.GetComponent<Slider>();
+
+        }
+        while (Healthbar == null);
 
         if (Healthbar == null)
             Debug.LogWarning("Healthbar reference is missing!", this);
@@ -87,4 +94,5 @@ public class PlayerHealth : MonoBehaviour
         Destroy(gameObject);
         
     }
+    public float GetCurrentHealth() { return currentHealth; }
 }

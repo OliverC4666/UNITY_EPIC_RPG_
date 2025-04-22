@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 2225438063591429644}
-  Entity: {fileID: 0}
+  Entity: {fileID: 11400000, guid: a42220abc0d2d7e44bd91845253ef843, type: 2}
 --- !u!95 &2225438063591429644
 Animator:
   serializedVersion: 7
@@ -243,15 +243,15 @@ MonoBehaviour:
   - name: Attack
     TriggerKey: Attack
     AttackRange: 0.62
-    Damage: 10
+    baseDamage: 15
     Attack: 1
-    attackCooldown: 0.2
+    attackCooldown: 0
   attackHitbox: {fileID: 3586379631518946507}
   patrolBorder: {fileID: 4307975989319550580}
   patrolSpeed: 2
   chaseSpeed: 2.44
-  detectionRange: 3.11
-  attackRange: 1.48
+  detectionRange: 3.26
+  attackRange: 1.28
   leftPoint: {fileID: 2949002782484741948}
   rightPoint: {fileID: 2365918005177805594}
 --- !u!1 &3586379631518946507
