@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 6805270101667850246}
   - component: {fileID: 5577126572741407602}
   m_Layer: 9
-  m_Name: HUD_HEALTH_BAR
+  m_Name: Health Bar Spawner for entities
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -332,8 +332,8 @@ RectTransform:
   m_LocalScale: {x: 1.6166701, y: 3.3936083, z: 2.119945}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 7760678013442090529}
   - {fileID: 5566871923992230229}
+  - {fileID: 7760678013442090529}
   m_Father: {fileID: 7754915350777674811}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}

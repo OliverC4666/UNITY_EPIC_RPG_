@@ -5,21 +5,25 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     public Animator anim;
-    
     public PlayerStats playerStats;  // ScriptableObject reference
 
+    private Rigidbody2D rb;
     private Slider Healthbar;
     private bool damaged = false;
     private float currentHealth;
     private float timeSinceDamaged = 0f;
     private float healDelay = 10f;
     private float healRate = 1f; // Amount to heal per second
-    private Rigidbody2D rb;
+    
 
     void Start()
     {
         currentHealth = playerStats.maxHealth;
+
+        GameEvents.instance.OnPlayerDestroyed += Die;
+
         anim = GetComponent<Animator>();
+
         rb = GetComponent<Rigidbody2D>();
         do
         {
@@ -28,6 +32,7 @@ public class PlayerHealth : MonoBehaviour
 
         }
         while (Healthbar == null);
+
 
         if (Healthbar == null)
             Debug.LogWarning("Healthbar reference is missing!", this);
@@ -49,6 +54,7 @@ public class PlayerHealth : MonoBehaviour
         {
             if (rb != null) Destroy(rb);
             if (anim != null) anim.SetBool("died", true);
+            GameEvents.instance.GameOver();
             return; // stop all healing logic
         }
 
@@ -67,7 +73,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (currentHealth <= 0) return; // already dead
+        if (currentHealth <=0) return; // already dead
         StartCoroutine(Damaged(damage));
     }
 
@@ -90,6 +96,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die()
     {
+        GameEvents.instance.OnPlayerDestroyed -= Die;
         Destroy(Healthbar.gameObject);
         Destroy(gameObject);
         

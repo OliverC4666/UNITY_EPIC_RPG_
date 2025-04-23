@@ -1,7 +1,9 @@
 using UnityEngine;
-
+using UnityEngine.UI;
+using UnityEngine.UIElements.Experimental;
+//construct Prefabricated sctructs and classes for project use
 [System.Serializable]
-public struct AttackOptionP
+public struct AttackOptionP //player attack option
 {
     public string name;
     public KeyCode button;
@@ -10,7 +12,7 @@ public struct AttackOptionP
     public int baseDamage;
 }
 [System.Serializable]
-public struct AttackOptionE
+public struct AttackOptionE //enemy/entities attack option
 {
     public string name;
     public string TriggerKey;
@@ -21,7 +23,7 @@ public struct AttackOptionE
 }
 
 [System.Serializable]
-public class Stats
+public class Stats //list for stats
 {
     public string name;
     public float value;
@@ -40,3 +42,11 @@ public class Stats
     }
 }
 
+[System.Serializable]
+
+public struct InfoTabManager
+{
+    public Toggle toggle;
+    public GameObject tab; 
+     
+}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1415150155970607576}
   - component: {fileID: 6103996081026738985}
   m_Layer: 5
-  m_Name: HUD
+  m_Name: HUD_floating texts
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -414,7 +414,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &525329734339398591
 RectTransform:
   m_ObjectHideFlags: 0
